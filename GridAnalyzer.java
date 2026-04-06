@@ -57,7 +57,7 @@ public class GridAnalyzer {
         
         while (running) {
             displayMenu();
-            System.out.print("Enter your choice (0-5): ");
+            System.out.print("Enter your choice (0-6): ");
             int choice = scanner.nextInt();
             
             if (choice == 1) {
@@ -75,15 +75,18 @@ public class GridAnalyzer {
             else if (choice == 5) {
                 patternDetection();
             } 
+            else if (choice == 6) {
+                transformGrid();
+            } 
             else if (choice == 0) {
                 running = false;
                 continue;
             } 
             else {
-                System.out.println("invalid choice. Please select a choice 0-5.");
+                System.out.println("invalid choice. Please select a choice 0-6.");
             }
             
-            if (running && choice >= 1 && choice <= 5) {
+            if (running && choice >= 1 && choice <= 6) {
                 System.out.println("Press Enter to continue...");
                 scanner.nextLine();
                 scanner.nextLine();
@@ -99,6 +102,7 @@ public class GridAnalyzer {
         System.out.println("3. Find Max/Min with Position");
         System.out.println("4. Frequency Check");
         System.out.println("5. Pattern Detection (Increasing Sequence)");
+        System.out.println("6. Transform Grid (Rotate/Swap/Reverse)");
         System.out.println("0. Exit");
     }
     
@@ -253,6 +257,51 @@ public class GridAnalyzer {
         } else {
             System.out.println("no strictly increasing row found, value -1 has been returned");
         }
+    }
+    
+    //ALGORITHM 6: Grid Transformation. implements rotate row right
+    public static void transformGrid() {
+        System.out.println("ALGORITHM 6: Grid Transformation");
+        
+        System.out.println("Current Grid:");
+        displayGrid();
+        
+        System.out.println("Transformation Options:");
+        System.out.println("1. Rotate a row right by 1");
+        System.out.print("Select transformation (1): ");
+        int choice = scanner.nextInt();
+        
+        if (choice == 1) {
+            rotateRowRight();
+        }
+        else {
+            System.out.println("invalid choice.");
+            return;
+        }
+        
+        System.out.println("grid after transformation:");
+        displayGrid();
+    }
+    
+    // this is a helper method: shifts a specific row to the right by 1 position
+    public static void rotateRowRight() {
+        System.out.print("Enter row index to rotate (0-" + (rows-1) + "): ");
+        int rowIndex = scanner.nextInt();
+        
+        if (rowIndex < 0 || rowIndex >= rows) {
+            System.out.println("invalid row index");
+            return;
+        }
+        
+        int lastElement = grid[rowIndex][cols - 1];
+        
+        for (int i = cols - 1; i > 0; i--) {
+            grid[rowIndex][i] = grid[rowIndex][i - 1];
+        }
+        
+        grid[rowIndex][0] = lastElement;
+        
+        System.out.println("row " + rowIndex + " shifted to the right by 1 position.");
     }
     
     //Helper method: displays the current state of the grid. used by menu option 1 and other methods
