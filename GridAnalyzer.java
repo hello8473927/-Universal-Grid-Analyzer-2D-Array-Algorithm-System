@@ -271,7 +271,7 @@ public class GridAnalyzer {
         }
     }
     
-    //ALGORITHM 6: Grid Transformation. implements rotate row right
+    //ALGORITHM 6: Grid Transformation. implements rotate row right, swap rows, and reverse column
     public static void transformGrid() {
         System.out.println("ALGORITHM 6: Grid Transformation");
         
@@ -280,11 +280,19 @@ public class GridAnalyzer {
         
         System.out.println("Transformation Options:");
         System.out.println("1. Rotate a row right by 1");
-        System.out.print("Select transformation (1): ");
+        System.out.println("2. Swap two rows");
+        System.out.println("3. Reverse a column");
+        System.out.print("Select transformation (1-3): ");
         int choice = scanner.nextInt();
         
         if (choice == 1) {
             rotateRowRight();
+        }
+        else if (choice == 2) {
+            swapTwoRows();
+        }
+        else if (choice == 3) {
+            reverseColumn();
         }
         else {
             System.out.println("invalid choice.");
@@ -314,6 +322,60 @@ public class GridAnalyzer {
         grid[rowIndex][0] = lastElement;
         
         System.out.println("row " + rowIndex + " shifted to the right by 1 position.");
+    }
+    
+    //helper method: swap two rows
+    public static void swapTwoRows() {
+        System.out.print("enter first row index (0-" + (rows-1) + "): ");
+        int row1 = scanner.nextInt();
+        System.out.print("enter second row index (0-" + (rows-1) + "): ");
+        int row2 = scanner.nextInt();
+        
+        if (row1 < 0 || row1 >= rows || row2 < 0 || row2 >= rows) {
+            System.out.println("invalid row index");
+            return;
+        }
+        
+        int[] temp = new int[cols];
+        
+        for (int i = 0; i < cols; i++) {
+            temp[i] = grid[row1][i];
+        }
+        
+        for (int i= 0; i < cols; i++) {
+            grid[row1][i] = grid[row2][i];
+        }
+        
+        for (int i = 0; i < cols; i++) {
+            grid[row2][i] = temp[i];
+        }
+        
+        System.out.println("Row " + row1 + " and Row " + row2 + " successfully swaped.");
+    }
+    
+    // helper method: reverse a specific column
+    public static void reverseColumn() {
+        System.out.print("enter column index to reverse (0-" + (cols-1) + "): ");
+        int colIndex = scanner.nextInt();
+        
+        if (colIndex < 0 || colIndex >= cols) {
+            System.out.println("invalid column index.");
+            return;
+        }
+        
+        int top = 0;
+        int bottom = rows - 1;
+        
+        while (top < bottom) {
+            int temp = grid[top][colIndex];
+            grid[top][colIndex] = grid[bottom][colIndex];
+            grid[bottom][colIndex] = temp;
+            
+            top++;
+            bottom--;
+        }
+        
+        System.out.println("column " + colIndex + " reversed successfully.");
     }
     
     //ALGORITHM 7: Subgrid Processing. calculates sum and finds max in a specified subgrid region
