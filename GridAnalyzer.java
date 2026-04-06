@@ -57,7 +57,7 @@ public class GridAnalyzer {
         
         while (running) {
             displayMenu();
-            System.out.print("Enter your choice (0-7): ");
+            System.out.print("Enter your choice (0-8): ");
             int choice = scanner.nextInt();
             
             if (choice == 1) {
@@ -81,15 +81,18 @@ public class GridAnalyzer {
             else if (choice == 7) {
                 subgridProcessing();
             } 
+            else if (choice == 8) {
+                boundaryAndDiagonalProcessing();
+            } 
             else if (choice == 0) {
                 running = false;
                 continue;
             } 
             else {
-                System.out.println("invalid choice. Please select a choice 0-7.");
+                System.out.println("invalid choice. Please select a choice 0-8.");
             }
             
-            if (running && choice >= 1 && choice <= 7) {
+            if (running && choice >= 1 && choice <= 8) {
                 System.out.println("Press Enter to continue...");
                 scanner.nextLine();
                 scanner.nextLine();
@@ -107,6 +110,7 @@ public class GridAnalyzer {
         System.out.println("5. Pattern Detection (Increasing Sequence)");
         System.out.println("6. Transform Grid (Rotate/Swap/Reverse)");
         System.out.println("7. Subgrid Analysis");
+        System.out.println("8. Boundary & Diagonals");
         System.out.println("0. Exit");
     }
     
@@ -353,6 +357,45 @@ public class GridAnalyzer {
         System.out.println("dimensions: " + subgridRows + "x" + subgridCols);
         System.out.println("sum of subgrid: " + subgridSum);
         System.out.println("max value in subgrid: " + subgridMax);
+    }
+    
+    //ALGORITHM 8: Boundary & Diagonal Processin. prints boundary elements, main diagonal, and secondary diagonal
+    public static void boundaryAndDiagonalProcessing() {
+        System.out.println("ALGORITHM 8: Boundary & Diagonal Processing");
+        
+        System.out.println("boundry elemnts:");
+        
+        for (int i = 0; i < cols; i++) {
+            System.out.print(grid[0][i] + " ");
+        }
+        
+        for (int i = 1; i < rows - 1; i++) {
+            System.out.print(grid[i][cols - 1] + " ");
+        }
+        
+        if (rows > 1) {
+            for (int i = cols - 1; i >= 0; i--) {
+                System.out.print(grid[rows - 1][i] + " ");
+            }
+        }
+        
+        for (int i = rows - 2; i > 0; i--) {
+            System.out.print(grid[i][0] + " ");
+        }
+        System.out.println();
+        
+        System.out.println("main diagonal (topleft to bottomright):");
+        int diagonalLength = Math.min(rows, cols);
+        for (int i = 0; i < diagonalLength; i++) {
+            System.out.print(grid[i][i] + " ");
+        }
+        System.out.println();
+        
+        System.out.println("secondaryu diagonal (toptight to bottomleft):");
+        for (int i = 0; i < diagonalLength; i++) {
+            System.out.print(grid[i][cols - 1 - i] + " ");
+        }
+        System.out.println();
     }
     
     //Helper method: displays the current state of the grid. used by menu option 1 and other methods
