@@ -57,7 +57,7 @@ public class GridAnalyzer {
         
         while (running) {
             displayMenu();
-            System.out.print("Enter your choice (0-8): ");
+            System.out.print("Enter your choice (0-9): ");
             int choice = scanner.nextInt();
             
             if (choice == 1) {
@@ -84,15 +84,18 @@ public class GridAnalyzer {
             else if (choice == 8) {
                 boundaryAndDiagonalProcessing();
             } 
+            else if (choice == 9) {
+                validationCheck();
+            } 
             else if (choice == 0) {
                 running = false;
                 continue;
             } 
             else {
-                System.out.println("invalid choice. Please select a choice 0-8.");
+                System.out.println("invalid choice. Please select a choice 0-9.");
             }
             
-            if (running && choice >= 1 && choice <= 8) {
+            if (running && choice >= 1 && choice <= 9) {
                 System.out.println("Press Enter to continue...");
                 scanner.nextLine();
                 scanner.nextLine();
@@ -111,6 +114,7 @@ public class GridAnalyzer {
         System.out.println("6. Transform Grid (Rotate/Swap/Reverse)");
         System.out.println("7. Subgrid Analysis");
         System.out.println("8. Boundary & Diagonals");
+        System.out.println("9. Validation Check (Duplicate Detection)");
         System.out.println("0. Exit");
     }
     
@@ -396,6 +400,40 @@ public class GridAnalyzer {
             System.out.print(grid[i][cols - 1 - i] + " ");
         }
         System.out.println();
+    }
+    
+    // ALGORITHM 9: Validation AlgorithmChecks if any row contains duplicate values
+    public static void validationCheck() {
+        System.out.println("ALGORITHM 9: Validation Check");
+        System.out.println("checking for duplicate values in rows");
+        
+        boolean hasDuplicates = false;
+        
+        for (int i = 0; i < rows; i++) {
+            boolean rowHasDuplicate = false;
+            
+            for (int j = 0; j < cols; j++) {
+                for (int k = j + 1; k < cols; k++) {
+                    if (grid[i][j] == grid[i][k]) {
+                        rowHasDuplicate = true;
+                        hasDuplicates = true;
+                        System.out.println("duplicate found in row " + i + ": " + grid[i][j] + " at positions " + j + " and " + k);
+                        break;
+                    }
+                }
+                if (rowHasDuplicate){
+                    break;
+                }
+            }
+        }
+        
+        if (!hasDuplicates) {
+            System.out.println("no duplicates found in any row return (false)");
+        } else {
+            System.out.println("dcuplicates/dupilcate detected return (true)");
+        }
+        
+        System.out.println("validation result: " + hasDuplicates);
     }
     
     //Helper method: displays the current state of the grid. used by menu option 1 and other methods
