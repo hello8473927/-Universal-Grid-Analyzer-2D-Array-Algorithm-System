@@ -57,7 +57,7 @@ public class GridAnalyzer {
         
         while (running) {
             displayMenu();
-            System.out.print("Enter your choice (0-6): ");
+            System.out.print("Enter your choice (0-7): ");
             int choice = scanner.nextInt();
             
             if (choice == 1) {
@@ -78,15 +78,18 @@ public class GridAnalyzer {
             else if (choice == 6) {
                 transformGrid();
             } 
+            else if (choice == 7) {
+                subgridProcessing();
+            } 
             else if (choice == 0) {
                 running = false;
                 continue;
             } 
             else {
-                System.out.println("invalid choice. Please select a choice 0-6.");
+                System.out.println("invalid choice. Please select a choice 0-7.");
             }
             
-            if (running && choice >= 1 && choice <= 6) {
+            if (running && choice >= 1 && choice <= 7) {
                 System.out.println("Press Enter to continue...");
                 scanner.nextLine();
                 scanner.nextLine();
@@ -103,6 +106,7 @@ public class GridAnalyzer {
         System.out.println("4. Frequency Check");
         System.out.println("5. Pattern Detection (Increasing Sequence)");
         System.out.println("6. Transform Grid (Rotate/Swap/Reverse)");
+        System.out.println("7. Subgrid Analysis");
         System.out.println("0. Exit");
     }
     
@@ -302,6 +306,53 @@ public class GridAnalyzer {
         grid[rowIndex][0] = lastElement;
         
         System.out.println("row " + rowIndex + " shifted to the right by 1 position.");
+    }
+    
+    //ALGORITHM 7: Subgrid Processing. calculates sum and finds max in a specified subgrid region
+    public static void subgridProcessing() {
+        System.out.println("ALGORITHM 7: Subgrid Processing");
+        
+        System.out.println("grid dimensions: " + rows + "x" + cols);
+        System.out.println("enter subgrid boundaries (inclusive):");
+        
+        System.out.print("row start (0-" + (rows-1) + "): ");
+        int rowStart = scanner.nextInt();
+        System.out.print("row end (" + rowStart + "-" + (rows-1) + "): ");
+        int rowEnd = scanner.nextInt();
+        System.out.print("column start (0-" + (cols-1) + "): ");
+        int colStart = scanner.nextInt();
+        System.out.print("column end (" + colStart + "-" + (cols-1) + "): ");
+        int colEnd = scanner.nextInt();
+        
+        if (rowStart < 0 || rowEnd >= rows || colStart < 0 || colEnd >= cols 
+            || rowStart > rowEnd || colStart > colEnd) {
+            System.out.println("invalid subgrid boundaries.");
+            return;
+        }
+        
+        int subgridSum = 0;
+        int subgridMax = grid[rowStart][colStart];
+        
+        System.out.println("subgrid contents:");
+        for (int i = rowStart; i <= rowEnd; i++) {
+            for (int j = colStart; j <= colEnd; j++) {
+                System.out.print(grid[i][j] + " ");
+                subgridSum += grid[i][j];
+                
+                if (grid[i][j] > subgridMax) {
+                    subgridMax = grid[i][j];
+                }
+            }
+            System.out.println();
+        }
+        
+        int subgridRows = rowEnd - rowStart + 1;
+        int subgridCols = colEnd - colStart + 1;
+        
+        System.out.println("subgrid Analysis:");
+        System.out.println("dimensions: " + subgridRows + "x" + subgridCols);
+        System.out.println("sum of subgrid: " + subgridSum);
+        System.out.println("max value in subgrid: " + subgridMax);
     }
     
     //Helper method: displays the current state of the grid. used by menu option 1 and other methods
